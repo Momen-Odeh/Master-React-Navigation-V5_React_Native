@@ -17,7 +17,7 @@ import Modal from "../screens/Modal";
 
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView } from "react-native";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -28,7 +28,11 @@ const SafeAreaStackScreen = ({ children }) => {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: "white" }}
+      style={{
+        flex: 1,
+        paddingTop: insets.top,
+        backgroundColor: "white",
+      }}
     >
       {children}
     </SafeAreaView>
@@ -37,40 +41,36 @@ const SafeAreaStackScreen = ({ children }) => {
 
 const ContactsStack = createStackNavigator();
 const ContactsStackScreen = () => (
-  <SafeAreaStackScreen>
-    <ContactsStack.Navigator
-    // screenOptions={{
-    //   headerStyle: {
-    //     backgroundColor: "red",
-    //   },
-    // }}
-    >
-      <ContactsStack.Screen
-        name="ContactsList"
-        component={ContactsList}
-        options={{ headerTitle: "Contacts" }}
-      />
-      <ContactsStack.Screen
-        name="ContactDetails"
-        component={ContactDetails}
-        options={({ route }) => {
-          return {
-            headerTitle: `${route.params.contact.name.first} ${route.params.contact.name.last}`,
-          };
-        }}
-      />
-    </ContactsStack.Navigator>
-  </SafeAreaStackScreen>
+  <ContactsStack.Navigator
+  // screenOptions={{
+  //   headerStyle: {
+  //     backgroundColor: "red",
+  //   },
+  // }}
+  >
+    <ContactsStack.Screen
+      name="ContactsList"
+      component={ContactsList}
+      options={{ headerTitle: "Contacts" }}
+    />
+    <ContactsStack.Screen
+      name="ContactDetails"
+      component={ContactDetails}
+      options={({ route }) => {
+        return {
+          headerTitle: `${route.params.contact.name.first} ${route.params.contact.name.last}`,
+        };
+      }}
+    />
+  </ContactsStack.Navigator>
 );
 
 const ActionsStack = createStackNavigator();
 const ActionsStackScreen = () => (
-  <SafeAreaStackScreen>
-    <ActionsStack.Navigator>
-      <ActionsStack.Screen name="ActionsList" component={ActionsList} />
-      <ActionsStack.Screen name="ActionDetails" component={ActionDetails} />
-    </ActionsStack.Navigator>
-  </SafeAreaStackScreen>
+  <ActionsStack.Navigator>
+    <ActionsStack.Screen name="ActionsList" component={ActionsList} />
+    <ActionsStack.Screen name="ActionDetails" component={ActionDetails} />
+  </ActionsStack.Navigator>
 );
 
 const AppTabs = createBottomTabNavigator();
@@ -192,9 +192,11 @@ const RootStackScreen = () => {
 const Navigation = () => {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <RootStackScreen />
-      </NavigationContainer>
+      <SafeAreaStackScreen>
+        <NavigationContainer>
+          <RootStackScreen />
+        </NavigationContainer>
+      </SafeAreaStackScreen>
     </SafeAreaProvider>
   );
 };
