@@ -1,15 +1,20 @@
+import { useEffect, useState } from "react";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import ContactsList from "../screens/ContactsList";
 import ContactDetails from "../screens/ContactDetails";
 import ActionsList from "../screens/ActionsList";
 import ActionDetails from "../screens/ActionDetails";
+import Settings from "../screens/Settings";
+import SignIn from "../screens/SignIn";
+import SignUp from "../screens/SignUp";
+import Loading from "../screens/Loading";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import Settings from "../screens/Settings";
 const ContactsStack = createStackNavigator();
 const ContactsStackScreen = () => (
   <ContactsStack.Navigator
@@ -94,10 +99,33 @@ const AppDrawerScreen = () => (
     <AppDrawer.Screen name="Settings" component={Settings} />
   </AppDrawer.Navigator>
 );
-const Navigation = () => (
-  <NavigationContainer>
-    <AppDrawerScreen />
-  </NavigationContainer>
+const AuthStack = createStackNavigator();
+const AuthStackScreen = () => (
+  <AuthStack.Navigator>
+    <AuthStack.Screen name={"SignIn"} component={SignIn}></AuthStack.Screen>
+    <AuthStack.Screen name={"SignUp"} component={SignUp}></AuthStack.Screen>
+  </AuthStack.Navigator>
 );
+const Navigation = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(!isLoading);
+      setUser({});
+    }, 500);
+  }, []);
+  return (
+    <NavigationContainer>
+      {isLoading ? (
+        <Loading />
+      ) : user ? (
+        <AppDrawerScreen />
+      ) : (
+        <AuthStackScreen />
+      )}
+    </NavigationContainer>
+  );
+};
 
 export default Navigation;
