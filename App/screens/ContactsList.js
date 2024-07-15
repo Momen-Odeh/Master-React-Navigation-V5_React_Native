@@ -6,31 +6,27 @@ import users from "../data/users";
 
 export default ({ navigation }) => {
   return (
-    <View>
-      <FlatList
-        data={users}
-        keyExtractor={(item) => {
-          return `${item.id.value}-${item.phone}`;
-        }}
-        renderItem={({ item }) => {
-          const name = `${item.name.first} ${item.name.last}`;
+    <FlatList
+      data={users}
+      keyExtractor={(item) => {
+        return `${item.id.value}-${item.phone}`;
+      }}
+      renderItem={({ item }) => {
+        const name = `${item.name.first} ${item.name.last}`;
 
-          return (
-            <Row
-              image={{ uri: item.picture.thumbnail }}
-              title={name}
-              subtitle={item.email}
-              onPress={() =>
-                navigation.push("ContactDetails", { contact: item })
-              }
-            />
-          );
-        }}
-        ItemSeparatorComponent={Separator}
-        ListHeaderComponent={() => <Separator />}
-        ListFooterComponent={() => <Separator />}
-        contentContainerStyle={{ paddingVertical: 20 }}
-      />
-    </View>
+        return (
+          <Row
+            image={{ uri: item.picture.thumbnail }}
+            title={name}
+            subtitle={item.email}
+            onPress={() => navigation.push("ContactDetails", { contact: item })}
+          />
+        );
+      }}
+      ItemSeparatorComponent={Separator}
+      ListHeaderComponent={() => <Separator />}
+      ListFooterComponent={() => <Separator />}
+      contentContainerStyle={{ paddingVertical: 20 }}
+    />
   );
 };

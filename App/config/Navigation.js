@@ -17,52 +17,71 @@ import Modal from "../screens/Modal";
 
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView, View } from "react-native";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+
+const SafeAreaStackScreen = ({ children }) => {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <SafeAreaView
+      style={{ flex: 1, paddingTop: insets.top, backgroundColor: "white" }}
+    >
+      {children}
+    </SafeAreaView>
+  );
+};
 
 const ContactsStack = createStackNavigator();
 const ContactsStackScreen = () => (
-  <ContactsStack.Navigator
-  // screenOptions={{
-  //   headerStyle: {
-  //     backgroundColor: "red",
-  //   },
-  // }}
-  >
-    <ContactsStack.Screen
-      name="ContactsList"
-      component={ContactsList}
-      options={{ headerTitle: "Contacts" }}
-    />
-    <ContactsStack.Screen
-      name="ContactDetails"
-      component={ContactDetails}
-      options={({ route }) => {
-        return {
-          headerTitle: `${route.params.contact.name.first} ${route.params.contact.name.last}`,
-        };
-      }}
-    />
-  </ContactsStack.Navigator>
+  <SafeAreaStackScreen>
+    <ContactsStack.Navigator
+    // screenOptions={{
+    //   headerStyle: {
+    //     backgroundColor: "red",
+    //   },
+    // }}
+    >
+      <ContactsStack.Screen
+        name="ContactsList"
+        component={ContactsList}
+        options={{ headerTitle: "Contacts" }}
+      />
+      <ContactsStack.Screen
+        name="ContactDetails"
+        component={ContactDetails}
+        options={({ route }) => {
+          return {
+            headerTitle: `${route.params.contact.name.first} ${route.params.contact.name.last}`,
+          };
+        }}
+      />
+    </ContactsStack.Navigator>
+  </SafeAreaStackScreen>
 );
 
 const ActionsStack = createStackNavigator();
 const ActionsStackScreen = () => (
-  <ActionsStack.Navigator>
-    <ActionsStack.Screen name="ActionsList" component={ActionsList} />
-    <ActionsStack.Screen name="ActionDetails" component={ActionDetails} />
-  </ActionsStack.Navigator>
+  <SafeAreaStackScreen>
+    <ActionsStack.Navigator>
+      <ActionsStack.Screen name="ActionsList" component={ActionsList} />
+      <ActionsStack.Screen name="ActionDetails" component={ActionDetails} />
+    </ActionsStack.Navigator>
+  </SafeAreaStackScreen>
 );
 
 const AppTabs = createBottomTabNavigator();
 const AppTabsScreen = () => (
   <AppTabs.Navigator
-    screenOptions={
-      {
-        // tabBarLabel: "test",
-        // tabBarActiveTintColor: "red",
-        // tabBarActiveBackgroundColor: "green",
-        // headerShown: false,//************************************ */
-      }
-    }
+    screenOptions={{
+      // tabBarLabel: "test",
+      // tabBarActiveTintColor: "red",
+      // tabBarActiveBackgroundColor: "green",
+      headerShown: false, //************************************ */
+    }}
   >
     <AppTabs.Screen
       name="Contacts"
@@ -172,9 +191,11 @@ const RootStackScreen = () => {
 
 const Navigation = () => {
   return (
-    <NavigationContainer>
-      <RootStackScreen />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <RootStackScreen />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
