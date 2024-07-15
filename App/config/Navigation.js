@@ -13,8 +13,11 @@ import Settings from "../screens/Settings";
 import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import Loading from "../screens/Loading";
+import Modal from "../screens/Modal";
+
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+
 const ContactsStack = createStackNavigator();
 const ContactsStackScreen = () => (
   <ContactsStack.Navigator
@@ -57,6 +60,7 @@ const AppTabsScreen = () => (
         // tabBarLabel: "test",
         // tabBarActiveTintColor: "red",
         // tabBarActiveBackgroundColor: "green",
+        // headerShown: false,//************************************ */
       }
     }
   >
@@ -84,12 +88,11 @@ const AppTabsScreen = () => (
 const AppDrawer = createDrawerNavigator();
 const AppDrawerScreen = () => (
   <AppDrawer.Navigator
-    screenOptions={
-      {
-        // drawerType: "slide",
-        // drawerPosition: "right",
-      }
-    }
+    screenOptions={{
+      // drawerType: "slide",
+      // drawerPosition: "right",
+      headerShown: false,
+    }}
   >
     <AppDrawer.Screen
       name="Tabs"
@@ -106,7 +109,9 @@ const AuthStackScreen = () => (
     <AuthStack.Screen name={"SignUp"} component={SignUp}></AuthStack.Screen>
   </AuthStack.Navigator>
 );
-const Navigation = () => {
+
+const RootStack = createStackNavigator();
+const RootStackScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -116,14 +121,33 @@ const Navigation = () => {
     }, 500);
   }, []);
   return (
-    <NavigationContainer>
+    <RootStack.Navigator
+      screenOptions={{
+        animationEnabled: false,
+        presentation: "modal",
+        headerMode: "none",
+      }}
+    >
       {isLoading ? (
-        <Loading />
+        <RootStack.Screen name="Loading" component={Loading} />
       ) : user ? (
-        <AppDrawerScreen />
+        <RootStack.Screen name="AppDrawerScreen" component={AppDrawerScreen} />
       ) : (
-        <AuthStackScreen />
+        <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
       )}
+      <RootStack.Screen
+        name="Modal"
+        component={Modal}
+        options={{ animationEnabled: true }}
+      />
+    </RootStack.Navigator>
+  );
+};
+
+const Navigation = () => {
+  return (
+    <NavigationContainer>
+      <RootStackScreen />
     </NavigationContainer>
   );
 };
