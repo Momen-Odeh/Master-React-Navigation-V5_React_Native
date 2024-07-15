@@ -78,8 +78,19 @@ const AppTabsScreen = () => (
 );
 const AppDrawer = createDrawerNavigator();
 const AppDrawerScreen = () => (
-  <AppDrawer.Navigator>
-    <AppDrawer.Screen name="Tabs" component={AppTabsScreen} />
+  <AppDrawer.Navigator
+    screenOptions={
+      {
+        // drawerType: "slide",
+        // drawerPosition: "right",
+      }
+    }
+  >
+    <AppDrawer.Screen
+      name="Tabs"
+      component={AppTabsScreen}
+      options={{ drawerLabel: "Home" }}
+    />
     <AppDrawer.Screen name="Settings" component={Settings} />
   </AppDrawer.Navigator>
 );
